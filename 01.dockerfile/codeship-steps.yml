@@ -1,6 +1,0 @@
-- service: demodockerfile
-  command: ruby --version
-- service: demohub
-  command: ruby --version
-- service: demodockerfiledockercompose
-  command: ls /app

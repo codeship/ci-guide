@@ -1,3 +1,0 @@
-- name: ci
-  service: test
-  command: ab -n 100 -c 15 http://lb/
