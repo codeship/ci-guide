@@ -1,9 +1,0 @@
-- service: demo
-  command: ls ./
-- service: demo
-  type: push
-  name: docker_push
-  image_name: localhost:5000/myapp
-  image_tag: {{ .CommitID }}
-  registry: localhost:5000
-  encrypted_dockercfg_path: ./.dockercfg.encrypted
