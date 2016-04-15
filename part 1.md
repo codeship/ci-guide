@@ -14,11 +14,11 @@ Once Jet is installed, we'll want to test it out. Type 'jet version' to print th
 
 Now that we have Jet installed, we're gonna take a few minutes and build a simple little "app" so that we have something to play with. This isn't a real app, we're just going to write a little Ruby script and a Dockerfile to use as case studies. We'll expand on them later on.
 
-First, create a file called Check.rb. In that file we're just going to print our Postgres and Redis versions. If you're wondering how we're printing versions of tools we haven't set up - we'll get there.
+First, create a file called **Check.rb**. In that file we're just going to print our Postgres and Redis versions. If you're wondering how we're printing versions of tools we haven't set up - we'll get there.
 
-In Check.rb, just write and save the following code:
+In **Check.rb**, just write and save the following code:
 
-``require "redis"
+`` `require "redis"
 require "pg"
 
 def exit_if_not expected, current
@@ -35,7 +35,7 @@ sleep 4
 postgres_username = "postgres"
 postgres_password = ""
 test = PG.connect("postgres", 5432, "", "", "postgres", postgres_username, postgres_password)
-puts test.exec("SELECT version();").first["version"]``
+puts test.exec("SELECT version();").first["version"]` ``
 
 ## create your dockerfile
 
@@ -67,7 +67,7 @@ RUN bundle install --jobs 20 --retry 5
 
 Add . /app``
 
-As you can see here, we're pulling the ruby base image, creating some directories, installing some gems and then adding our code. That last bit is important because now when we launch our Docker container, the check.rb script we wrote earlier will be inside it and ready to run.
+As you can see here, we're pulling the ruby base image, creating some directories, installing some gems and then adding our code. That last bit is important because now when we launch our Docker container, the **check.rb** script we wrote earlier will be inside it and ready to run.
 
 ## define your services / compose
 
@@ -99,12 +99,61 @@ Since we reference *redis* and *postgres*, we need to define them as separate se
 
 One important thing to know is that any time you build a service, such as *demo*, it will automatically spin up containers for every linked service... so if we build *demo*, we end up with three containers: one for the primary service and one for each service.
 
+![Three containers](/img)
+
 ## pick your steps to run
+
+Next up, we define what steps run in your CI/CD workflow. This is done through another simple .YML file that lives in your repo - **codeship-steps.yml**. Go ahead and create this file and add the following code:
+
+``- name: ruby
+  service: demo
+  command: bundle exec ruby check.rb``
+
+  Let's take a look at what's happening. First, there's just one step, and it has a name: *ruby*. This is the name attached to the step in the log output.
+
+  The step then launches one of the services defined in your **codeship-services.yml** file - in this case, it's launching the *demo* service. Now, if you remember, because we launched the *demo* service it's also going to launch the two linked services: *redis* and *postgres*.
+  Next we call a command inside our new *demo* container. We tell it to run the **check.rb** script we created and added to our Dockerfile earlier.
+
+  ![flow chart of three containers and script](/img)
+
+  As you'll recall, that script prints the version of *redis* and *postgres* - which it will by checking the version of the services we launched via the links to our original *demo* service.
 
 ## run locally
 
+Now -  let's see how all of this ties together. Open up a terminal and go to the directory with the files we created.
+
+Type:
+
+``jet run``
+
+This will tell the Codeship CLI tool Jet to build the services in your **codeship-services.yml** file and then run the steps in your **codeship-steps.yml** file.
+
+If everything is working, you shoudl see something like this:
+
+![Screenshot of terminal showing example](/img)
+
+And if yous scroll through your logs, you should see the versions for *redis* and *postgres* printed just as **check.rb** instructs it to.
+
 ## change version
+
+Now we'll take a look at one of the cool benefits of doing all of your CI/CD process with these simple files in your repo.
+
+Open up **codeship-services.yml** and find the line where you define your *redis* service. Change:
+
+``image: redis:3.0.5``
+
+to
+
+``image: redis:2.6.17``
 
 ## run locally again
 
+Now switch back to your terminal and run:
+
+``jet steps``
+
+Looks at the same logs as before, you'll see that now your *redis* service is launching an entirely new version! Changing your infrastructure is as simple as changing a few characters in a single file on your repo. This can be done branch by branch, build by build - making upgrading, testing and iteration as easy and risk-free as possible.
+
 ## next: adding tests
+
+Now that we've covered the basics of how **Jet**, **Codeship-services.yml**, **Codeship-steps.yml** and your Docker applications link together to create a unique and powerful Docker-native CI/CD process, we'll move on to explore some more robust examples. Up next, _integration testing_.
