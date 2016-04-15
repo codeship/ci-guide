@@ -49,7 +49,7 @@ If you're not, and you want to spend a little bit of time getting up to speed on
 
 Now, if you're ready to get going, we're going to define a simple Dockerfile. So, create your file and drop this code in:
 
-``# base on latest ruby base image
+<!-- # base on latest ruby base image
 FROM ruby:2.2.1
 
 # update and install dependencies
@@ -65,7 +65,7 @@ ADD Gemfile /app/Gemfile
 ADD Gemfile.lock /app/Gemfile.lock
 RUN bundle install --jobs 20 --retry 5
 
-Add . /app``
+Add . /app -->
 
 As you can see here, we're pulling the ruby base image, creating some directories, installing some gems and then adding our code. That last bit is important because now when we launch our Docker container, the **check.rb** script we wrote earlier will be inside it and ready to run.
 
