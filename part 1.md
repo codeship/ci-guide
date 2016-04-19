@@ -156,4 +156,4 @@ Looks at the same logs as before, you'll see that now your *redis* service is la
 
 ## next: adding tests
 
-Now that we've covered the basics of how **Jet**, **Codeship-services.yml**, **Codeship-steps.yml** and your Docker applications link together to create a unique and powerful Docker-native CI/CD process, we'll move on to explore some more robust examples. Up next, _integration testing_.
+Now that we've covered the basics of how **Jet**, **Codeship-services.yml**, **Codeship-steps.yml** and your Docker applications link together to create a unique and powerful Docker-native CI/CD process, we'll move on to explore some more robust examples. Up next, [running your tests.](part2)
