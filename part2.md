@@ -10,7 +10,9 @@ In our case, we're just going to check for an existent environmental variable. T
 
 So, first we're going to...
 
-*STILL NEED TO DO THIS // Add Rspec To Gems //
+*STILL NEED TO DO THIS // Create Env Variable //
+STILL NEED TO DO THIS // Encrypt Env Variable //
+STILL NEED TO DO THIS // Add Rspec To Gems //
 STILL NEED TO DO THIS // Write Rspec Test To Check Env //
 STILL NEED TO DO THIS // Add To Steps //
 STILL NEED TO DO THIS  // Run Jet Steps //*
