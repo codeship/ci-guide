@@ -111,4 +111,4 @@ So let's go back to our **codeship-steps.yml** file and write our deployment to 
 
 Now we've built an app, added a test, pushed an image and deployed our code. What next?
 
-We want to walk through a couple of the powerful, flexible things you can achieve with Codeship, Jet and Docker - and we're going to start with *volumes*.
+We want to walk through a couple of the powerful, flexible things you can achieve with Codeship, Jet and Docker - and we're going to start with *volumes*. [Let's learn about volumes.](part4)
