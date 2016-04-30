@@ -85,4 +85,4 @@ Of course, every application is different so there are a ton of potential reason
 
 ## next: parallel, speed, etc
 
-Next we're going to look at sonme of the more powerful and complex things you can begin to stack together to create really fast, efficient or customized CI/CD pipelines with Codeship. [Taking a look at parallel steps, speed, and more.](part4)
+Next we're going to look at two of the more powerful and productive things you can do to create really fast and efficient CI/CD pipelines with Codeship. [Taking a look at parallel steps and caching.](part4)
