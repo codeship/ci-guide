@@ -1,0 +1,15 @@
+demo:
+  build:
+    image: myapp
+    dockerfile_path: Dockerfile
+  links:
+    - redis
+    - postgres
+  environment:
+    TEST_TOKEN: Testing123
+
+redis:
+  image: redis:3.0.5
+
+postgres:
+   image: postgres:9.3.6
