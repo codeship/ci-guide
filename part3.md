@@ -23,12 +23,23 @@ Now that we have our accounts created, let's go ahead and open up our **codeship
 Add the following code, and then we'll go through it to discuss what's happening and what we need to do to make it work.
 
 ```
-- service: demo
-  type: push
-  name: dockerhub_push
-  image_name: account/repo
-  registry: https://index.docker.io/v1/
-  encrypted_dockercfg_path: dockercfg.encrypted
+- type: parallel
+  steps:
+    - name: checkrb
+      service: demo
+      command: bundle exec ruby check.rb
+    - name: test
+      service: demo
+      command: bundle exec ruby test.rb
+
+- type: serial
+  steps:
+    - name: dockerhub_push
+      service: checkrb
+      type: push
+      image_name: account/repo
+      registry: https://index.docker.io/v1/
+      encrypted_dockercfg_path: dockercfg.encrypted
 ```
 
 There are a few things to note here:
