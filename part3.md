@@ -1,8 +1,6 @@
 ## now we release code or images (or both)
 
-Now that you have a working CI process with a successful test, the next step is releasing your code.
-
-Releasing your code can mean pushing your Docker image out to an image repo like Dockerhub or deploying your code to Amazon or AWS. Or both!
+Now that you have a working CI process with a successful test, the next step is to push out your Docker image!
 
 ## you'll need a Codeship with Jet account
 
@@ -16,9 +14,7 @@ If you don't have a repo configured, just create a new repo on Github and push t
 
 ## you'll also need a Dockerhub or Quay account (and Heroku/AWS/etc)
 
-Now, you're also gonna need an image repo account and a hosting account. For this example, we're gonna go with Dockerhub for the repo and Heroku for our hosting, but this could actually be any repo and host we want.
-
-If you don't have these accounts set up yet, go ahead and create them now. Once you have an account, you'll also need to create a repo to use for our demo project.
+Now, you're also gonna need an image repo account and a hosting account. For this example, we're gonna go with Dockerhub but you could use Quay.io or host your own image repo, if you wanted to.
 
 ## let's do a push
 
@@ -98,14 +94,6 @@ When we click in to our build logs, we should able to click our push step and se
 Now, if we go over to our Dockerhub repo, we should see some meta data indicating a successful push:
 
 ![Dockerhub repo screenshot](/img)
-
-## a push PLUS a deployment
-
-We don't want to stop at saving our image in our repo, though - we want our code to go live!
-
-So let's go back to our **codeship-steps.yml** file and write our deployment to Heroku.
-
-*STILL NEED TO DO THIS // Deploy To Heroku Code //*
 
 ## up next: using volumes
 

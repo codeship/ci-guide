@@ -10,14 +10,60 @@ In our case, we're just going to check for an existent environmental variable. T
 
 So, first we're going to...
 
-*STILL NEED TO DO THIS // Create Env Variable //
-STILL NEED TO DO THIS // Encrypt Env Variable //
-STILL NEED TO DO THIS // Add Rspec To Gems //
-STILL NEED TO DO THIS // Write Rspec Test To Check Env //
-STILL NEED TO DO THIS // Add To Steps //
-STILL NEED TO DO THIS  // Run Jet Steps //*
+### Create an environment variable
 
-## looking at log output
+Opening up our **codeship-services.yml**, we'll add the following:
+
+```
+demo:
+  build:
+    image: myapp
+    dockerfile_path: Dockerfile
+  links:
+    - redis
+    - postgres
+  environment:
+    TEST_TOKEN: Testing123
+```
+
+This new **environment** directive creates a new environment variable in our build named `TEST_TOKEN`. Note that even though we're explicitly declaring our environment variables here, in a production application we'd actual prefer to [encrypt them](https://codeship.com/documentation/docker/encryption/).
+
+### Look for the variable
+
+With our environment variable set, let's write a test to look for it.
+
+Create a new file called **test.rb** and open up it. In our new file, we'll write:
+
+```
+if ENV['TEST_TOKEN'].nil?
+   puts "Our Variable Is Not Working"
+   exit 1
+else
+   puts "Our Variable Is Working"
+   exit 0
+ end
+```
+
+What we're doing here is checking to see if our new environment variable is nil. If it is, we have a proble, and we exit with a status code 1 to let the CI/CD process know we have an error. If it's not nil, we're in business and we exit with a status code 0 to indicate a success.
+
+### Update Steps
+
+Now that we have a working test script, we need to run it. Let's open up our **codeship-steps.yml** file and modify it to the following:
+
+```
+- type: parallel
+  steps:
+    - name: checkrb
+      service: demo
+      command: bundle exec ruby check.rb
+    - name: test
+      service: demo
+      command: bundle exec ruby test.rb
+```
+
+As you can see we're now running our two scripts under a new **parallel** modifier. This means they will run side-by-side on separate containers, letting us move through multiple steps in our pipeline more quickly.
+
+### Run and see!
 
 Now, after configuring your tests, let's go back to your terminal and run ```jet steps```
 
@@ -27,36 +73,6 @@ You should see something like this indicating our tests ran and passed:
 
 ![Screenshot of local test log output](/img)
 
-## tests per branch
-
-Now I want to take a look at a bit of the flexibility you can implement around running your tests.
-
-Let's go back to our **codeship-steps.yml** file and look at the command where we run our tests.
-
-On this step, let's add a new line:
-
-``tag: master``
-
-This tag tells Codeship to only run this tag on the master branch.
-
-So if we go create a new branch in our terminal, commit the code and then run Jet steps, you should see that the test does not run:
-
-``git checkout -B test_branch
-git commit . -"Adding a tag to our test step"
-jet steps``
-
-![Screenshot of local test log output without a test](/img)
-
-Now, if we switch back to master and try again, you should see something different:
-
-``git checkout master
-git merge test_branch
-jet steps``
-
-![Screenshot of local test log output](/img)
-
-As you can see here, running our tests on certain branches is super easy. You can imagine creating branches that run all your tests (before deplyments, for instance), branches that only run front-end tests or tests for certain apis (/api/* for instance)... and a ton of other combinations that will streamline your workflows and keep developers prodcutive.
-
 ## after testing, push images and/or deploy!
 
-So, now we have images building, a test that runs and a script that runs if that test passes. The next step is to move from CI to CD: [pushing images and deploying your code.](part3)
+So, now we have images building, a working script and a working test! The next step is to move from CI to CD: [pushing images and deploying your code.](part3)
