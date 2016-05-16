@@ -10,6 +10,13 @@ demo:
   volumes:
     - ./tmp:/code
 
+demo_volumes:
+  build:
+    image: myapp
+    dockerfile_path: Dockerfile.volumes
+  volumes_from:
+    - demo
+
 redis:
   image: redis:3.0.5
 

@@ -22,8 +22,10 @@ demo:
   links:
     - redis
     - postgres
+  environment:
+    TEST_TOKEN: Testing123
   volumes:
-    - ./tmp:/app
+    - ./tmp:/code
 ```
 
 The *volumes* directive takes a parameter that maps a host directory (*./tmp*) to a container directory (*/app*). This means that inside of our container, anything written or read from */app* will actually be taking place on the host in the *./tmp* directory.
@@ -37,10 +39,10 @@ Let's prepare for the second part first, reading from the volume in a step that 
 To read from the volume, we'll need to create a separate service in your **codeship-services.yml** file. Let's do that now.
 
 ```
-volumes_test:
+demo_volumes:
   build:
-    image: volumestest
-    dockerfile_path: Dockerfile2
+    image: myapp
+    dockerfile_path: Dockerfile.volumes
   volumes_from:
     - demo
 ```
@@ -49,27 +51,65 @@ There are a few things that are worth noting here. First, we've given the servic
 
 Second, we've added a new directive, *volumes_from* and specified that it will read from the volume in our main *demo* service. This is the essential requirement for connecting volumes between services.
 
-Of course, since our new service needs a new Dockerfile, we'll need to create our **Dockerfile2** really quick.
+Of course, since our new service needs a new Dockerfile, we'll need to create our **Dockerfile.volumes** really quick. For this example, we're just going to clone our existing **Dockerfile** and rename it.
 
-*STILL NEED TO DO THIS // Create Second Dockerfile //*
+## Creating a new test
 
-Now that our service for reading from the volume exists, let's open up our test spec and write a quick test for that service checking for the presence of an artifact in the volume.
+Now that our service for reading from the volume exists, let's create a new file named **write.rb** to create the artifact on our volume that we'll be testing for. After creating the file, drop in the following code:
 
-*STILL NEED TO DO THIS // Add Rspec Test For Artifact Existing //*
+```
+File.write('/code/test.txt', 'Test content')
+puts "Writing to a volume!"
+exit 0
+```
 
-And we'll need to call this test, along with our new service, in our **codeship-steps.yml** file.
+As you can see, it's writing a simple text file to our volume that we'll use to verify that our volumes setting is working properly. Next, we'll add a second new file to call from our new service so that we can check to make sure the text file exists. Let's create **read.rb** and drop in the following:
 
-*STILL NEED TO DO THIS // Add service and test to steps file //*
+```
+data = File.read("/code/test.txt")
+puts "Reading from the volume" + data
+exit 0
+```
 
-Next up, we have to write something in to our volume in our main *demo* service. Let's add a new file called **artifact.sh** and open that up.
+## Making it all work
 
-*STILL NEED TO DO THIS // Write file to volume //*
+Now that we have our new service and both of our scripts, we need to edit our **codeship-steps.yml** file so that everything get's executed. We're going to take advantage of nested parallel and serial steps to do this. Open up **codeship-steps.yml** and modify it to the following:
 
-We'll also need to call this script in our CI/CD pipeline so that the artifact is actually written. Let's do that in our **codeship-steps.yml** file.
+```
+- type: parallel
+  steps:
+    - name: checkrb
+      service: demo
+      command: bundle exec ruby check.rb
+    - name: test
+      service: demo
+      command: bundle exec ruby test.rb
+    - type: serial
+      steps:
+      - name: volumes_in
+        service: demo
+        command: bundle exec ruby write.rb
+      - name: volumes_out
+        service: demo
+        command: bundle exec ruby read.rb
 
-*STILL NEED TO DO THIS // Add step calling artifact script //*
+- type: serial
+  steps:
+    - name: dockerhub_push
+      service: checkrb
+      type: push
+      image_name: account/repo
+      registry: https://index.docker.io/v1/
+      encrypted_dockercfg_path: dockercfg.encrypted
+```
 
-So now we've got a new service that writes an artifact to a volume, as defined in our **Codeship-steps.yml** file. We also have a new test in our original *demo* service that checks to see if the artifact exists before moving on with our image push and deployment. This, in a nutshell, is how volumes are used in your CI/CD pipeline.
+As you csan see, we've created a third parallel step to run out new volumes test, and that paralell step is using a *serial* sub-step to first run the **write.rb** script and then to run the **read.rb** script.
+
+So, now we've got a new service that writes an artifact to a volume, as defined in our **Codeship-steps.yml** file. We also have a new test in our original *demo* service that checks to see if the artifact exists before moving on with our image push and deployment. This, in a nutshell, is how volumes are used in your CI/CD pipeline.
+
+Let's go ahead and run `jet steps` to see it all work.
+
+![Image of a volumes log output](/img)
 
 ## theoretical uses
 
