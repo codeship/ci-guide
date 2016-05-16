@@ -6,6 +6,14 @@
     - name: test
       service: demo
       command: bundle exec ruby test.rb
+    - type: serial
+      steps:
+      - name: volumes_in
+        service: demo
+        command: bundle exec ruby write.rb
+      - name: volumes_out
+        service: demo
+        command: bundle exec ruby read.rb
 
 - type: serial
   steps:
