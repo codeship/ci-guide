@@ -18,7 +18,8 @@ First, create a file called **Check.rb**. In that file we're just going to print
 
 In **Check.rb**, just write and save the following code:
 
-``require "redis"
+``
+require "redis"
 require "pg"
 
 def exit_if_not expected, current
