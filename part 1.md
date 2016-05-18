@@ -17,8 +17,8 @@ Now that we have Jet installed, we're gonna take a few minutes and build a simpl
 First, create a file called **Check.rb**. In that file we're just going to print our Postgres and Redis versions. If you're wondering how we're printing versions of tools we haven't set up - we'll get there.
 
 In **Check.rb**, just write and save the following code:
+````
 
-``
 require "redis"
 require "pg"
 
@@ -36,7 +36,9 @@ sleep 4
 postgres_username = "postgres"
 postgres_password = ""
 test = PG.connect("postgres", 5432, "", "", "postgres", postgres_username, postgres_password)
-puts test.exec("SELECT version();").first["version"]``
+puts test.exec("SELECT version();").first["version"]
+
+````
 
 ## create your dockerfile
 
@@ -48,6 +50,7 @@ If you're not, and you want to spend a little bit of time getting up to speed on
 - [Docker Documentation](https://docs.docker.com/)
 
 Now, if you're ready to get going, we're going to define a simple Dockerfile. So, create your file and drop this code in:
+```
 
 !-- # base on latest ruby base image
 FROM ruby:2.2.1
@@ -67,6 +70,7 @@ RUN bundle install --jobs 20 --retry 5
 
 Add . /app -->
 
+```
 As you can see here, we're pulling the ruby base image, creating some directories, installing some gems and then adding our code. That last bit is important because now when we launch our Docker container, the **check.rb** script we wrote earlier will be inside it and ready to run.
 
 ## define your services / compose
@@ -81,7 +85,8 @@ So, with Codeship we use Docker Compose as a jumping off point for your CI/CD pr
 
 So, once you've created your **codeship-services.yml** go ahead and add the following code to it:
 
-``demo:
+````
+demo:
   build:
     image: myapp
     dockerfile_path: Dockerfile
@@ -91,7 +96,9 @@ So, once you've created your **codeship-services.yml** go ahead and add the foll
 redis:
   image: redis:3.0.5
 postgres:
-   image: postgres:9.3.6``
+   image: postgres:9.3.6
+   
+```
 
 The first thing this file does is define our *demo* service. It *builds* the Dockerfile and names it *myapp*. The *links* section tells it what services are required for *demo* to run. In this case both *redis* and *postgres*.
 
@@ -105,10 +112,11 @@ One important thing to know is that any time you build a service, such as *demo*
 
 Next up, we define what steps run in your CI/CD workflow. This is done through another simple .YML file that lives in your repo - **codeship-steps.yml**. Go ahead and create this file and add the following code:
 
-``- name: ruby
+````
+- name: ruby
   service: demo
-  command: bundle exec ruby check.rb``
-
+  command: bundle exec ruby check.rb
+````
   Let's take a look at what's happening. First, there's just one step, and it has a name: *ruby*. This is the name attached to the step in the log output.
 
   The step then launches one of the services defined in your **codeship-services.yml** file - in this case, it's launching the *demo* service. Now, if you remember, because we launched the *demo* service it's also going to launch the two linked services: *redis* and *postgres*.
@@ -124,7 +132,7 @@ Now -  let's see how all of this ties together. Open up a terminal and go to the
 
 Type:
 
-``jet steps``
+```jet steps```
 
 This will tell the Codeship CLI tool Jet to build the services in your **codeship-services.yml** file and then run the steps in your **codeship-steps.yml** file.
 
