@@ -1,0 +1,25 @@
+- type: parallel
+  steps:
+    - name: checkrb
+      service: demo
+      command: bundle exec ruby check.rb
+    - name: test
+      service: demo
+      command: bundle exec ruby test.rb
+    # - type: serial
+    #   steps:
+    #   - name: volumes_in
+    #     service: demo
+    #     command: bundle exec ruby write.rb
+    #   - name: volumes_out
+    #     service: demo
+    #     command: bundle exec ruby read.rb
+
+- type: serial
+  steps:
+    - name: dockerhub_push
+      service: checkrb
+      type: push
+      image_name: account/repo
+      registry: https://index.docker.io/v1/
+      encrypted_dockercfg_path: dockercfg.encrypted

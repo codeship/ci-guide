@@ -21,13 +21,40 @@ demo:
   cached: true
 ```
 
-Now, let's push our build so that it runs and sets our cache. Of course, to see our cache in action we'll have to push *another* build using the same image so that we can actually use the cache - so let's comment out part of our **codeship-steps.yml** file just for this example and push up a new build.
+Now, let's push our build so that it runs and sets our cache.
 
-*STILL NEED TO DO THIS // Comment out step //*
+Of course, to see our cache in action we'll have to push *another* build using the same image so that we can actually use the cache - so let's comment out part of our **codeship-steps.yml** file just for this example and push up a (second) new build.
 
+```
+- type: parallel
+  steps:
+    - name: checkrb
+      service: demo
+      command: bundle exec ruby check.rb
+    - name: test
+      service: demo
+      command: bundle exec ruby test.rb
+    # - type: serial
+    #   steps:
+    #   - name: volumes_in
+    #     service: demo
+    #     command: bundle exec ruby write.rb
+    #   - name: volumes_out
+    #     service: demo
+    #     command: bundle exec ruby read.rb
+
+- type: serial
+  steps:
+    - name: dockerhub_push
+      service: checkrb
+      type: push
+      image_name: account/repo
+      registry: https://index.docker.io/v1/
+      encrypted_dockercfg_path: dockercfg.encrypted
+```
 Once the new build runs, we can check our log output and see our cache in action.
 
-![Cacheing working log output.]({{ site.baseurl }}/images/cacheworkinglogs.png) **DOTHISDOTHISDOTHIS**
+![Cacheing working log output.]({{ site.baseurl }}/images/cacheworking.png)
 
 Cacheing is a really powerful way to speed your builds up. We also have a great article on optimizing your builds overall, as well as making sure your Dockerfile is designed with cacheing in mind. [You can read that here.](https://blog.codeship.com/speeding-up-your-docker-based-builds-with-codeship/)
 
@@ -41,7 +68,7 @@ On our step, let's add a new line:
 
 ``tag: master``
 
-This tag tells Codeship to only run this tag on the master branch. You can imagine creating branches that run all your tests (before deplyments, for instance), branches that only run front-end tests or tests for certain apis (**/api/_** for instance)... and a ton of other combinations that will streamline your workflows and keep developers productive.
+This tag tells Codeship to only run this tag on the master branch. You can imagine creating branches that run all your tests (before deployments, for instance), branches that only run front-end tests or tests for certain apis (**/api/_** for instance)... and a ton of other combinations that will streamline your workflows and keep developers productive.
 
 ## learn more!
 
