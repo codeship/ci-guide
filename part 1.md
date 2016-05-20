@@ -8,7 +8,7 @@ The first thing you want to do is install Jet on your local machine. For Mac use
 
 Once Jet is installed, we'll want to test it out. Type 'jet version' to print the version number on screen. Next, type 'jet help' to bring up the help options. There's a lot Jet can do - from running CI to encrypting your credentials, so take some time to play around with what you see when you run 'jet help'.
 
-![Screenshot of Jet version and/or help output](/img)
+![Jet Help Log Output]({{ site.baseurl }}/images/jet-help.png)
 
 ## make a simple ruby script
 
@@ -85,7 +85,7 @@ So, with Codeship we use Docker Compose as a jumping off point for your CI/CD pr
 
 So, once you've created your **codeship-services.yml** go ahead and add the following code to it:
 
-````
+```
 demo:
   build:
     image: myapp
@@ -97,7 +97,6 @@ redis:
   image: redis:3.0.5
 postgres:
    image: postgres:9.3.6
-   
 ```
 
 The first thing this file does is define our *demo* service. It *builds* the Dockerfile and names it *myapp*. The *links* section tells it what services are required for *demo* to run. In this case both *redis* and *postgres*.
@@ -106,7 +105,7 @@ Since we reference *redis* and *postgres*, we need to define them as separate se
 
 One important thing to know is that any time you build a service, such as *demo*, it will automatically spin up containers for every linked service. So if we build *demo*, we end up with three containers: one for the primary service and one for each service.
 
-![Three containers](/img)
+![Three containers]({{ site.baseurl }}/images/3containers.png)
 
 ## pick your steps to run
 
@@ -122,7 +121,7 @@ Next up, we define what steps run in your CI/CD workflow. This is done through a
   The step then launches one of the services defined in your **codeship-services.yml** file - in this case, it's launching the *demo* service. Now, if you remember, because we launched the *demo* service it's also going to launch the two linked services: *redis* and *postgres*.
   Next we call a command inside our new *demo* container. We tell it to run the **check.rb** script we created and added to our Dockerfile earlier.
 
-  ![flow chart of three containers and script](/img)
+  ![flow chart of three containers and script]({{ site.baseurl }}/images/workflow.png)
 
   As you'll recall, that script prints the version of *redis* and *postgres* - which it will by checking the version of the services we launched via the links to our original *demo* service.
 
@@ -132,13 +131,13 @@ Now -  let's see how all of this ties together. Open up a terminal and go to the
 
 Type:
 
-```jet steps```
+``jet steps```
 
 This will tell the Codeship CLI tool Jet to build the services in your **codeship-services.yml** file and then run the steps in your **codeship-steps.yml** file.
 
 If everything is working, you should see something like this:
 
-![Screenshot of terminal showing example](/img)
+![Screenshot of terminal showing example]({{ site.baseurl }}/images/part1working.png)
 
 And if you scroll through your logs, you should see the versions for *redis* and *postgres* printed just as **check.rb** instructs it to.
 
@@ -148,11 +147,7 @@ Now we'll take a look at one of the cool benefits of doing all of your CI/CD pro
 
 Open up **codeship-services.yml** and find the line where you define your *redis* service. Change:
 
-``image: redis:3.0.5``
-
-to
-
-``image: redis:2.6.17``
+`image: redis:3.0.5` to `image: redis:2.6.17`.
 
 ## run locally again
 
