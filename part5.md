@@ -2,20 +2,6 @@
 
 Now that we've covered the basic pieces of the service, we should take a few minutes and cover two additional features that make for more flexible and powerful CI/CD workflows for your team.
 
-## parallelizing
-
-The first optimization, and one of the most common and most immediately useful, is to parallelize the steps defined in your **Codeship-steps.yml** file.
-
-Let's open up that file and modify our existing commands.
-
-*STILL NEED TO DO THIS // Parallelize both tests //*
-
-So using this basic syntax, we've defined that we're going to run *parallel* type steps, then listed our two steps. Now, rather than running serially, these two steps will run on their own containers at the same time - letting us get through them much faster.
-
-In the web UI, parallel steps are grouped together but maintain separate log output.
-
-![Parallel steps web UI]({{ site.baseurl }}/images/parallelsteps.png)
-
 ## cacheing
 
 Next up, let's take a look at cacheing. When you use cacheing, we'll do an invisible push to your repo with a special tag letting us know that this image is for us to reuse. Then, on your next build, we'll quickly check your Dockerfile to see if anything has changed. If nothing has changed - meaning, if building the Dockerfile would result in the exact same image as last time - we'll reuse the cached image. This is a layer by layer cache, so we'll reuse as much of the image as we can before rebuilding the rest of the image once we encounter a change.
