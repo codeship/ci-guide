@@ -2,9 +2,10 @@
 
 Now that you have a working CI process with a successful test, the next step is to push out your Docker image!
 
-## you'll need a Codeship with Jet account
+# required services before we push
+## a Codeship account with access to Jet
 
-The first link you'll need is a working Codeship with Jet account. If you haven't used up a 14 day free trial yet, you can [sign up for one here.](#)
+The first thing you'll need is a working Codeship account with access to Jet. If you haven't used up a 14 day free trial yet, you can [sign up for one here.](codeship.com/docker)
 
 If you have an account already - or, once you've activated your free trial - you'll want to create a new project. When creating your new project, make sure to select the Docker infrastructure after choosing the repo you're using.
 
@@ -12,15 +13,15 @@ If you have an account already - or, once you've activated your free trial - you
 
 If you don't have a repo configured, just create a new repo on Github and push the code examples we're using so far.
 
-## you'll also need a Dockerhub or Quay account (and Heroku/AWS/etc)
+## a Dockerhub/Quay.io/AWS ECR account
 
-Now, you're also gonna need an image repo account and a hosting account. For this example, we're gonna go with Dockerhub but you could use Quay.io or host your own image repo, if you wanted to.
+Now, you're also gonna need an image repo account and a hosting account. For this example, we're gonna go with Dockerhub but you could use Quay.io or AWS ECR or host your own image repo, if you wanted to. @ethan what do we use for hosting for this example
 
 ## let's do a push
 
 Now that we have our accounts created, let's go ahead and open up our **codeship-steps.yml** file. After our test step, we're going to add a new step - a *push* step.
 
-Add the following code, and then we'll go through it to discuss what's happening and what we need to do to make it work.
+Add the following code, and then we'll go through it, to discuss what's happening and what we need to do to make it work.
 
 ```
 - type: parallel
@@ -46,7 +47,7 @@ There are a few things to note here:
 
 *Push* is the step type we use to signify that we're pushing out the image defined or built by our service.
 
-*Image name* takes a slightly different form depending on the repo - if it's Dockerhub, it's *account_name/repo_name*. This is your repo account name and then the name of the specific repo on your account you're pushing to. You'll need to review specific documentation if you're using Quay or a private repo to make sure the name is defined correctly.
+*Image name* takes a slightly different form depending on the repo - if it's Dockerhub, it's *account_name/repo_name*. This is your repo account name and then the name of the specific repo on your account you're pushing to. You'll need to review specific documentation if you're using Quay.io / AWS ECR or a private repo to make sure the name is defined correctly.
 
 *Registry* is the unique push URL for the image repo. Again, this varies per registry so if you're not using Dockerhub be sure to verify that you get the right value for this.
 
@@ -89,7 +90,8 @@ Now, assuming you've swapped in your credentials in the push step and created yo
 
 Let's go back to our terminal and run:
 
-```git add .
+```
+git add .
 git commit . -m "Deploying our image"
 git push origin master
 ```
@@ -108,6 +110,6 @@ Now, if we go over to our Dockerhub repo, we should see some meta data indicatin
 
 ## up next: using volumes
 
-Now we've built an app, added a test, pushed an image and deployed our code. What next?
+Now we've built an app, added a test, pushed an image and deployed our code. What's next?
 
-We want to walk through a couple of the powerful, flexible things you can achieve with Codeship, Jet and Docker - and we're going to start with *volumes*. [Let's learn about volumes.](part4)
+We want to walk through a couple of the powerful, flexible things you can achieve with Codeship, Jet and Docker - and we're going to start with *volumes*. [Let's learn about volumes.](part4.md)

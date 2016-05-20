@@ -47,7 +47,7 @@ Once the new build runs, we can check our log output and see our cache in action
 
 ![Cacheing working log output.](img)
 
-Cacheing is a really powerful way to speed your builds up. We also have a great article on optimizing your builds overall, as well as making sure your Dockerfile is designed with caching in mind. [You can read that here.](buildspeedguide)
+Cacheing is a really powerful way to speed your builds up. We also have a great article on optimizing your builds overall, as well as making sure your Dockerfile is designed with cacheing in mind. [You can read that here.](https://blog.codeship.com/speeding-up-your-docker-based-builds-with-codeship/)
 
 ## tests per branch
 
@@ -63,17 +63,21 @@ This tag tells Codeship to only run this tag on the master branch.
 
 So if we go create a new branch in our terminal, commit the code and then run Jet steps, you should see that the test does not run:
 
-``git checkout -B test_branch
+````
+git checkout -B test_branch
 git commit . -"Adding a tag to our test step"
-jet steps``
+jet steps
+````
 
 ![Screenshot of local test log output without a test](/img)
 
 Now, if we switch back to master and try again, you should see something different:
 
-``git checkout master
+````
+git checkout master
 git merge test_branch
-jet steps``
+jet steps
+````
 
 ![Screenshot of local test log output](/img)
 

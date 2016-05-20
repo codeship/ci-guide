@@ -1,6 +1,6 @@
 ## intro
 
-One of the most essential parts of any CI process is running your tests. With Codeship's Jet tool for Docker, we wanted to make building your CI/CD pipeline easy - so we made iterating through, debugging and improving your tests both locally and remotely after you push as straightforward as we could.
+One of the most essential parts of any CI process is running your tests. With Codeship's Jet tool for Docker, we wanted to make building your CI/CD pipeline easy - so we made iterating through, debugging and improving your tests both locally and remotely after you push, as straightforward as we could.
 
 ## running your tests
 
@@ -44,7 +44,7 @@ else
  end
 ```
 
-What we're doing here is checking to see if our new environment variable is nil. If it is, we have a proble, and we exit with a status code 1 to let the CI/CD process know we have an error. If it's not nil, we're in business and we exit with a status code 0 to indicate a success.
+What we're doing here is checking to see if our new environment variable is nil. If it is, we have a problem and we exit with a status code 1 to let the CI/CD process know we have an error. If it's not nil, we're in business and we exit with a status code 0 to indicate a success.
 
 ### Update Steps
 

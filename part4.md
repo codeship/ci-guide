@@ -1,6 +1,6 @@
 ## what's a volume for?
 
-Let's taking a look at volumes, and let's start with *what is a volume and what is it good for*?
+Let's take a look at volumes, and let's start with *what is a volume and what is it good for*?
 
 First, it's important to know that Codeship does not reuse containers on different steps, meaning there is no way for a container to grab data or information - or maintain changes - made by a previous container or step in your workflow.
 
@@ -125,4 +125,4 @@ Of course, every application is different so there are a ton of potential reason
 
 ## next: parallel, speed, etc
 
-Next we're going to look at two of the more powerful and productive things you can do to create really fast and efficient CI/CD pipelines with Codeship. [Taking a look at parallel steps and caching.](part4)
+Next we're going to look at two of the more powerful and productive things you can do to create really fast and efficient CI/CD pipelines with Codeship. [Taking a look at parallel steps and caching.](part5.md)

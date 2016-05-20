@@ -17,8 +17,9 @@ Now that we have Jet installed, we're gonna take a few minutes and build a simpl
 First, create a file called **Check.rb**. In that file we're just going to print our Postgres and Redis versions. If you're wondering how we're printing versions of tools we haven't set up - we'll get there.
 
 In **Check.rb**, just write and save the following code:
+````
 
-`` `require "redis"
+require "redis"
 require "pg"
 
 def exit_if_not expected, current
@@ -35,7 +36,9 @@ sleep 4
 postgres_username = "postgres"
 postgres_password = ""
 test = PG.connect("postgres", 5432, "", "", "postgres", postgres_username, postgres_password)
-puts test.exec("SELECT version();").first["version"]` ``
+puts test.exec("SELECT version();").first["version"]
+
+````
 
 ## create your dockerfile
 
@@ -43,13 +46,13 @@ Next we're going to create a Dockerfile. Hopefully you're pretty familiar with D
 
 If you're not, and you want to spend a little bit of time getting up to speed on Docker, we highly recommend using these resources as a jumping off point.
 
-- link1
-- link2
-- link3
+- [Docker's Getting Startet Guide](https://docs.docker.com/mac/)
+- [Docker Documentation](https://docs.docker.com/)
 
 Now, if you're ready to get going, we're going to define a simple Dockerfile. So, create your file and drop this code in:
+```
 
-<!-- # base on latest ruby base image
+!-- # base on latest ruby base image
 FROM ruby:2.2.1
 
 # update and install dependencies
@@ -67,6 +70,7 @@ RUN bundle install --jobs 20 --retry 5
 
 Add . /app -->
 
+```
 As you can see here, we're pulling the ruby base image, creating some directories, installing some gems and then adding our code. That last bit is important because now when we launch our Docker container, the **check.rb** script we wrote earlier will be inside it and ready to run.
 
 ## define your services / compose
@@ -81,7 +85,8 @@ So, with Codeship we use Docker Compose as a jumping off point for your CI/CD pr
 
 So, once you've created your **codeship-services.yml** go ahead and add the following code to it:
 
-``demo:
+````
+demo:
   build:
     image: myapp
     dockerfile_path: Dockerfile
@@ -91,13 +96,15 @@ So, once you've created your **codeship-services.yml** go ahead and add the foll
 redis:
   image: redis:3.0.5
 postgres:
-   image: postgres:9.3.6``
+   image: postgres:9.3.6
+   
+```
 
-The first thing this file does is define our *demo* service. It *builds* the Dockerfile and names it *myapp*. The *links* section tells it what services are required for *demo* to run... this this case both *redis* and *postgres*.
+The first thing this file does is define our *demo* service. It *builds* the Dockerfile and names it *myapp*. The *links* section tells it what services are required for *demo* to run. In this case both *redis* and *postgres*.
 
-Since we reference *redis* and *postgres*, we need to define them as separate services as well. For each, we provide an image - we could build one using separate Dockerfiles but instead we're going to download existing remos from a Docker registry. This is Dockerhub by default but it can be any registry you specify.
+Since we reference *redis* and *postgres*, we need to define them as separate services as well. For each, we provide an image - we could build one using separate Dockerfiles but instead we're going to download existing repos from a Docker registry. This is Dockerhub by default but it can be any registry you specify.
 
-One important thing to know is that any time you build a service, such as *demo*, it will automatically spin up containers for every linked service... so if we build *demo*, we end up with three containers: one for the primary service and one for each service.
+One important thing to know is that any time you build a service, such as *demo*, it will automatically spin up containers for every linked service. So if we build *demo*, we end up with three containers: one for the primary service and one for each service.
 
 ![Three containers](/img)
 
@@ -105,10 +112,11 @@ One important thing to know is that any time you build a service, such as *demo*
 
 Next up, we define what steps run in your CI/CD workflow. This is done through another simple .YML file that lives in your repo - **codeship-steps.yml**. Go ahead and create this file and add the following code:
 
-``- name: ruby
+````
+- name: ruby
   service: demo
-  command: bundle exec ruby check.rb``
-
+  command: bundle exec ruby check.rb
+````
   Let's take a look at what's happening. First, there's just one step, and it has a name: *ruby*. This is the name attached to the step in the log output.
 
   The step then launches one of the services defined in your **codeship-services.yml** file - in this case, it's launching the *demo* service. Now, if you remember, because we launched the *demo* service it's also going to launch the two linked services: *redis* and *postgres*.
@@ -124,15 +132,15 @@ Now -  let's see how all of this ties together. Open up a terminal and go to the
 
 Type:
 
-``jet run``
+```jet steps```
 
 This will tell the Codeship CLI tool Jet to build the services in your **codeship-services.yml** file and then run the steps in your **codeship-steps.yml** file.
 
-If everything is working, you shoudl see something like this:
+If everything is working, you should see something like this:
 
 ![Screenshot of terminal showing example](/img)
 
-And if yous scroll through your logs, you should see the versions for *redis* and *postgres* printed just as **check.rb** instructs it to.
+And if you scroll through your logs, you should see the versions for *redis* and *postgres* printed just as **check.rb** instructs it to.
 
 ## change version
 
@@ -152,7 +160,7 @@ Now switch back to your terminal and run:
 
 ``jet steps``
 
-Looks at the same logs as before, you'll see that now your *redis* service is launching an entirely new version! Changing your infrastructure is as simple as changing a few characters in a single file on your repo. This can be done branch by branch, build by build - making upgrading, testing and iteration as easy and risk-free as possible.
+Looks at the same logs as before, you'll see that now your *redis* service is launching an entirely new version! Changing your CI infrastructure is as simple as changing a few characters in a single file on your repo. This can be done branch by branch, build by build - making upgrading, testing and iteration as easy and risk-free as possible.
 
 ## next: adding tests
 
