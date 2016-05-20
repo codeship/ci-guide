@@ -14,7 +14,7 @@ So using this basic syntax, we've defined that we're going to run *parallel* typ
 
 In the web UI, parallel steps are grouped together but maintain separate log output.
 
-![Parallel steps web UI](/img)
+![Parallel steps web UI]({{ site.baseurl }}/images/parallelsteps.png)
 
 ## cacheing
 
@@ -35,17 +35,13 @@ demo:
   cached: true
 ```
 
-Now, let's push our build and take a look at the log output.
-
-![Log output around pushing cache.](img)
-
-To see our cache in action, we'll have to push another build using the same image up, so let's comment out part of our **codeship-steps.yml** file just for this example and push up a new build.
+Now, let's push our build so that it runs and sets our cache. Of course, to see our cache in action we'll have to push *another* build using the same image so that we can actually use the cache - so let's comment out part of our **codeship-steps.yml** file just for this example and push up a new build.
 
 *STILL NEED TO DO THIS // Comment out step //*
 
 Once the new build runs, we can check our log output and see our cache in action.
 
-![Cacheing working log output.](img)
+![Cacheing working log output.]({{ site.baseurl }}/images/cacheworkinglogs.png) **DOTHISDOTHISDOTHIS**
 
 Cacheing is a really powerful way to speed your builds up. We also have a great article on optimizing your builds overall, as well as making sure your Dockerfile is designed with cacheing in mind. [You can read that here.](https://blog.codeship.com/speeding-up-your-docker-based-builds-with-codeship/)
 
@@ -55,38 +51,16 @@ Now I want to take a look at a bit of the flexibility you can implement around r
 
 Let's go back to our **codeship-steps.yml** file and look at the command where we run our tests.
 
-On this step, let's add a new line:
+On our step, let's add a new line:
 
 ``tag: master``
 
-This tag tells Codeship to only run this tag on the master branch.
-
-So if we go create a new branch in our terminal, commit the code and then run Jet steps, you should see that the test does not run:
-
-````
-git checkout -B test_branch
-git commit . -"Adding a tag to our test step"
-jet steps
-````
-
-![Screenshot of local test log output without a test](/img)
-
-Now, if we switch back to master and try again, you should see something different:
-
-````
-git checkout master
-git merge test_branch
-jet steps
-````
-
-![Screenshot of local test log output](/img)
-
-As you can see here, running our tests on certain branches is super easy. You can imagine creating branches that run all your tests (before deplyments, for instance), branches that only run front-end tests or tests for certain apis (/api/* for instance)... and a ton of other combinations that will streamline your workflows and keep developers prodcutive.
+This tag tells Codeship to only run this tag on the master branch. You can imagine creating branches that run all your tests (before deplyments, for instance), branches that only run front-end tests or tests for certain apis (**/api/_** for instance)... and a ton of other combinations that will streamline your workflows and keep developers productive.
 
 ## learn more!
 
 From here, there's still a ton more you can learn to optimize your builds, troubleshoot your problems and build more complex and productive workflows.
 
-We recommend [our blog](blog), [our documentation](documentation), [our community forum](communityforum), and [our webinars](webinars) to keep learning more.
+We recommend [our blog](https://blog.codeship.com), [our documentation](https://codeship.com/documentation/), [our community forum](https://community.codeship.com), and [our webinars](http://resources.codeship.com/webinars) to keep learning more.
 
 It's important to get to a working build as soon as possible when you start your new CI/CD process with Codeship and Docker. From there, take some time with your team every few weeks or every few months to find ways to optimize, save time, keep the developers coding with fewer waiting periods and improve your application and Docker image efficiency.

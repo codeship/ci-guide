@@ -8,7 +8,7 @@ This can create some problems. What if you want to create a service responsible 
 
 That's where volumes come in. A volume is mounted on the host, "underneath" your containers, and you can specify which containers can read from volumes defined by other services. This lets you artifact data, generate assets and pass data between services easily - while keeping your services and steps isolated like you would want for a truly high-integrity CI process.
 
-![Image of a volume/container relationship diagram](/img)
+![Volume/Host/Container Diagram]({{ site.baseurl }}/images/sharedhostvolume.png)
 
 ## how to set one up
 
@@ -109,7 +109,7 @@ So, now we've got a new service that writes an artifact to a volume, as defined 
 
 Let's go ahead and run `jet steps` to see it all work.
 
-![Image of a volumes log output](/img)
+![Image of a volumes log output]({{ site.baseurl }}/images/volumeslogoutput.png) **DOTHISDOTHISDOTHIS**
 
 ## theoretical uses
 
@@ -117,9 +117,9 @@ The one thing this example probably doesn't cover is why YOU might need to use v
 
 Here are some of the most common real world use-cases for volumes:
 
-* Generating assets used by later services ([See an example repo here.](#))
-* Populating a database to be tested later in the pipeline ([See an example repo here.](#))
-* Passing credentials between services to keep authentication secure ([See an example repo here.](#))
+* Generating assets used by later services
+* Populating a database to be tested later in the pipeline
+* Passing credentials between services to keep authentication secure
 
 Of course, every application is different so there are a ton of potential reasons your specific application might need volumes that aren't covered here.
 
