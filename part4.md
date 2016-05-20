@@ -109,7 +109,7 @@ So, now we've got a new service that writes an artifact to a volume, as defined 
 
 Let's go ahead and run `jet steps` to see it all work.
 
-![Image of a volumes log output]({{ site.baseurl }}/images/volumeslogoutput.png) **DOTHISDOTHISDOTHIS**
+![Image of a volumes log output]({{ site.baseurl }}/images/volumesworking.png)
 
 ## theoretical uses
 

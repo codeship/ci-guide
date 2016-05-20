@@ -1,6 +1,6 @@
 demo:
   build:
-    image: myapp
+    image: hi
     dockerfile_path: Dockerfile
   links:
     - redis
