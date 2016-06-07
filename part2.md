@@ -75,4 +75,4 @@ You should see something like this indicating our tests ran and passed:
 
 ## after testing, push images and/or deploy!
 
-So, now we have images building, a working script and a working test! The next step is to move from CI to CD: [pushing images and deploying your code.](part3)
+So, now we have images building, a working script and a working test! The next step is to move from CI to CD: [pushing images and deploying your code.](part3.md)
