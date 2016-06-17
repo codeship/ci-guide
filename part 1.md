@@ -1,18 +1,18 @@
 ## getting started
 
-We're going to walk you through using Codeship to build, test and deploy your Docker applications. Codeship uses a new tool called Jet to turn your existing Docker apps and workflows in to a seamless CI/CD process.
+We're going to walk you through using Codeship to build, test and deploy your Docker applications. Codeship uses a tool called Jet to turn your existing Docker apps and workflows into a seamless CI/CD process.
 
-The first thing you want to do is install Jet on your local machine. For Mac users, you can do this through Brew and Linux users can curl the Jet binary directly. [You can see more detailed instructions here.](https://codeship.com/documentation/docker/installation/)
+The first thing you want to do is install Codeship Jet on your local machine. For Mac users, you can do this through Brew and Linux users can curl the Jet binary directly. [You can see more detailed instructions here.](https://codeship.com/documentation/docker/installation/)
 
 ## testing jet
 
-Once Jet is installed, we'll want to test it out. Type 'jet version' to print the version number on screen. Next, type 'jet help' to bring up the help options. There's a lot Jet can do - from running CI to encrypting your credentials, so take some time to play around with what you see when you run 'jet help'.
+Once Jet is installed, we'll want to test it out. Type 'jet version' to print the version number on screen. Next, type 'jet help' to bring up the help options. Jet is very powerful - from running CI to encrypting your credentials, so take some time to play around with what you see when you run 'jet help'.
 
 ![Jet Help Log Output]({{ site.baseurl }}/images/jet-help.png)
 
 ## make a simple ruby script
 
-Now that we have Jet installed, we're gonna take a few minutes and build a simple little "app" so that we have something to play with. This isn't a real app, we're just going to write a little Ruby script and a Dockerfile to use as case studies. We'll expand on them later on.
+Now that we have Jet installed, we're gonna take a few minutes and build a simple little "app". This isn't a real app, we're just going to write a little Ruby script and a Dockerfile to use as case studies. We'll expand on them later on.
 
 First, create a file called **Check.rb**. In that file we're just going to print our Postgres and Redis versions. If you're wondering how we're printing versions of tools we haven't set up - we'll get there.
 
@@ -22,7 +22,7 @@ In **Check.rb**, just write and save the following code:
 require "redis"
 require "pg"
 
-def exit_if_not expected, current
+def exit_if_not(expected, current)
   puts "Expected: #{expected}"
   puts "Current: #{current}"
   exit(1) if expected != current
@@ -42,12 +42,13 @@ puts test.exec("SELECT version();").first["version"]
 
 ## create your dockerfile
 
-Next we're going to create a Dockerfile. Hopefully you're pretty familiar with Dockerfiles, Docker Compose and the rest of the standard Docker workflows.
+Next we're going to create a Dockerfile.
 
-If you're not, and you want to spend a little bit of time getting up to speed on Docker, we highly recommend using these resources as a jumping off point.
+If you're not familiar with Dockerfiles, and you want to spend a little bit of time getting up to speed on Docker, we highly recommend using these resources as a jumping off point.
 
 - [Docker's Getting Startet Guide](https://docs.docker.com/mac/)
 - [Docker Documentation](https://docs.docker.com/)
+- [The Docker Ecosystem](https://blog.codeship.com/understanding-the-docker-ecosystem/)
 
 Now, if you're ready to get going, we're going to define a simple Dockerfile. So, create your file and drop this code in:
 ```
@@ -68,9 +69,9 @@ ADD Gemfile /app/Gemfile
 ADD Gemfile.lock /app/Gemfile.lock
 RUN bundle install --jobs 20 --retry 5
 
-Add . /app -->
-
+Add . /app
 ```
+
 As you can see here, we're pulling the ruby base image, creating some directories, installing some gems and then adding our code. That last bit is important because now when we launch our Docker container, the **check.rb** script we wrote earlier will be inside it and ready to run.
 
 ## define your services / compose
@@ -155,7 +156,7 @@ Now switch back to your terminal and run:
 
 ``jet steps``
 
-Looks at the same logs as before, you'll see that now your *redis* service is launching an entirely new version! Changing your CI infrastructure is as simple as changing a few characters in a single file on your repo. This can be done branch by branch, build by build - making upgrading, testing and iteration as easy and risk-free as possible.
+Looking at the same logs as before, you'll see that now your *redis* service is launching an entirely new version! Changing your CI infrastructure is as simple as changing a few characters in a single file on your repo. This can be done branch by branch, build by build - making upgrading, testing and iteration as easy and risk-free as possible.
 
 ## next: adding tests
 
