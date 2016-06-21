@@ -10,7 +10,7 @@ The first thing you'll need is a working Codeship account with access to Jet. If
 
 If you have an account already - or, once you've activated your free trial - you'll want to create a new project. When creating your new project, make sure to select the Docker infrastructure after choosing the repo you're using.
 
-![Selecting Docker Infrastructure]({{ site.baseurl }}/images/setup_select_docker.png)
+![Selecting Docker Infrastructure](/images/setup_select_docker.png)
 
 If you don't have a repo configured, just create a new repo on Github and push the code examples we're using so far.
 
@@ -60,7 +60,7 @@ So, just like we did with our environmental variabels in the previous lesson, we
 
 First, if you didn't do it on the last step, you'll need to download yur project's AES key in to your code's directory. To get the AES key, just go to your project on Codeship.com and look at the project settings.
 
-![Downloading AES key]({{ site.baseurl }}/images/aes_key.png)
+![Downloading AES key](/images/aes_key.png)
 
 Nw that you've downloaded your AES key, we'll created a new file called dockercfg where we'll drop in our Dockerhub credentials:
 
@@ -103,11 +103,11 @@ Now that we've got our build running, let's hop over the web UI and look for evi
 
 When we click in to our build logs, we should able to click our push step and see something like this:
 
-![Push step log output]({{ site.baseurl }}/images/pushlogs.png)
+![Push step log output](/images/pushlogs.png)
 
 Now, if we go over to our Dockerhub repo, we should see some meta data indicating a successful push:
 
-![Dockerhub repo screenshot]({{ site.baseurl }}/images/dockerhub-recent-push.png)
+![Dockerhub repo screenshot](/images/dockerhub-recent-push.png)
 
 ## up next: using volumes
 

@@ -71,7 +71,7 @@ This will run your CI process as defined in **codeship-steps.yml**.
 
 You should see something like this indicating our tests ran and passed:
 
-![Screenshot of local test log output]({{ site.baseurl }}/images/part2working.png)
+![Screenshot of local test log output](/images/part2working.png)
 
 ## after testing, push images and/or deploy!
 

@@ -8,7 +8,7 @@ This can create some problems. What if you want to create a service responsible 
 
 That's where volumes come in. A volume is mounted on the host, "underneath" your containers, and you can specify which containers can read from volumes defined by other services. This lets you artifact data, generate assets and pass data between services easily - while keeping your services and steps isolated like you would want for a truly high-integrity CI process.
 
-![Volume/Host/Container Diagram]({{ site.baseurl }}/images/sharedhostvolume.png)
+![Volume/Host/Container Diagram](/images/sharedhostvolume.png)
 
 ## how to set one up
 
@@ -109,7 +109,7 @@ So, now we've got a new service that writes an artifact to a volume, as defined 
 
 Let's go ahead and run `jet steps` to see it all work.
 
-![Image of a volumes log output]({{ site.baseurl }}/images/volumesworking.png)
+![Image of a volumes log output](/images/volumesworking.png)
 
 ## theoretical uses
 
