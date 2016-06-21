@@ -54,7 +54,7 @@ Of course, to see our cache in action we'll have to push *another* build using t
 ```
 Once the new build runs, we can check our log output and see our cache in action.
 
-![Cacheing working log output.]({{ site.baseurl }}/images/cacheworking.png)
+![Cacheing working log output.](/images/cacheworking.png)
 
 Cacheing is a really powerful way to speed your builds up. We also have a great article on optimizing your builds overall, as well as making sure your Dockerfile is designed with cacheing in mind. [You can read that here.](https://blog.codeship.com/speeding-up-your-docker-based-builds-with-codeship/)
 
