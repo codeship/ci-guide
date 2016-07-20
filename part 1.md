@@ -20,7 +20,7 @@ In **Check.rb**, just write and save the following code:
 ````
 
 require "redis"
-require "(
+require "pg"
 
 def exit_if_not(expected, current)
   puts "Expected: #{expected}"
