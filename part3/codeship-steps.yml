@@ -10,7 +10,7 @@
 - type: serial
   steps:
     - name: dockerhub_push
-      service: checkrb
+      service: demo
       type: push
       image_name: account/repo
       registry: https://index.docker.io/v1/
