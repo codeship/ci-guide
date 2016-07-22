@@ -37,7 +37,7 @@ Add the following code, and then we'll go through it, to discuss what's happenin
 - type: serial
   steps:
     - name: dockerhub_push
-      service: checkrb
+      service: demo
       type: push
       image_name: account/repo
       registry: https://index.docker.io/v1/
