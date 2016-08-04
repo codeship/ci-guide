@@ -62,7 +62,7 @@ First, if you didn't do it on the last step, you'll need to download yur project
 
 ![Downloading AES key](/images/aes_key.png)
 
-Nw that you've downloaded your AES key, we'll created a new file called dockercfg where we'll drop in our Dockerhub credentials:
+Now that you've downloaded your AES key, we'll created a new file called dockercfg where we'll drop in our Dockerhub credentials:
 
 ```
 {
