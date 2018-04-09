@@ -1,5 +1,5 @@
 # base on latest ruby base image
-FROM ruby:2.2.1
+FROM ruby:2.5.0
 
 # update and install dependencies
 RUN apt-get update -qq

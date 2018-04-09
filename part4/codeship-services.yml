@@ -10,7 +10,7 @@ demo:
   volumes:
     - ./tmp:/code
 
-demo_volumes:
+demo-volumes:
   build:
     image: myapp
     dockerfile_path: Dockerfile.volumes
