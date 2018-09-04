@@ -2,7 +2,7 @@ demo:
   build:
     image: hi
     dockerfile_path: Dockerfile
-  links:
+  depends_on:
     - redis
     - postgres
   environment:

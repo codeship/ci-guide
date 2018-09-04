@@ -1,17 +1,15 @@
 # base on latest ruby base image
 FROM ruby:2.5.0
 
-# update and install dependencies
-RUN apt-get update -qq
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y build-essential libpq-dev nodejs apt-utils
+# install dependencies
+RUN apt-get update && apt-get install -y build-essential libpq-dev nodejs apt-utils
 
-# setup app folders
-RUN mkdir /app
+# declare /app as working directory of image
 WORKDIR /app
 
-# copy over Gemfile and install bundle
-ADD Gemfile /app/Gemfile
-ADD Gemfile.lock /app/Gemfile.lock
+# copy over Gemfile and Gemfile.lock to image's working directory, then run `bundle install`
+COPY Gemfile Gemfile.lock ./
 RUN bundle install --jobs 20 --retry 5
 
-Add . /app
+# copy all remaining files/folders in project directory to the container
+COPY . /app
